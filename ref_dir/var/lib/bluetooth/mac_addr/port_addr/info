@@ -1,0 +1,5 @@
+# Only change the Key value
+# Keep everything else to default 
+[LinkKey]
+Key=32-digit-hex
+

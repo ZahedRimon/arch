@@ -1,0 +1,62 @@
+
+pacman -S intel-ucode 
+pacman -S ntfs-3g 
+
+pacman -S grub vim
+pacman -S freetype2 dosfstools efibootmgr os-prober
+
+pacman -S base-devel bash-completion openssh
+
+pacman -S xorg xorg-xinit xterm
+pacman -S nvidia nvidia-settings 
+pacman -S plasma
+pacman -S kde-applications
+
+# fonts
+pacman -S terminus-font
+pacman -S gnu-free-fonts opendesktop-fonts ttf-dejavu ttf-liberation 
+
+# network and sound
+pacman -S network-manager-applet pulseaudio-equalizer-ladspa 
+
+# applications
+pacman -S ctags git mtr p7zip tree unrar unzip wget
+pacman -S php php-cgi php-fpm xdebug composer
+pacman -S nodejs npm yarn
+
+pacman -S atom chromium firefox gimp gnome-disk-utility gparted keepassxc mysql-workbench nmap okteta opera qbittorrent vlc 
+
+pacman -S virtualbox virtualbox-guest-iso
+usermod -aG vboxusers zahed
+
+pacman -S vagrant
+
+pacman -S pkgstats
+
+# discover backend
+pacman -S packagekit-qt5 
+pacman -S flatpak
+pacman -S fwupd 
+
+# bluetooth
+pacman -S bluez bluez-utils
+
+# for bluetooth keyboard
+pacman -S chntpw 
+
+# optional
+pacman -S cabextract
+pacman -S libdbusmenu-glib 
+pacman -S opencl-nvidia
+pacman -S ffnvcodec-headers 
+pacman -S gst-libav 
+pacman -S vdpauinfo 
+vdpauinfo 
+pacman -S acpid
+
+# pacman commands
+pacman -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | sort -h
+pacman -Qii | awk '/^MODIFIED/ {print $2}'
+pacman -Qe
+pacman -Qs package
+pacman -Ss package

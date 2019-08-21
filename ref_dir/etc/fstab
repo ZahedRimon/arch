@@ -1,0 +1,4 @@
+# disks to be mounted
+UUID="" /mnt/wdcNt ntfs defaults 0 0
+UUID="" /mnt/tcEx ext4 defaults 0 0
+UUID="" /mnt/tcNt ntfs defaults 0 0

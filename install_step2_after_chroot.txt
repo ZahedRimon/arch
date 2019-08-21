@@ -1,0 +1,155 @@
+cd
+tar xvf master.tar.gz
+#
+ln -sf /usr/share/zoneinfo/Asia/Dhaka /etc/localtime 
+hwclock --systohc
+vi /etc/locale.gen 
+locale-gen 
+echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+passwd
+#
+pacman -S intel-ucode
+pacman -S ntfs-3g
+#
+pacman -S grub vim
+pacman -S freetype2 dosfstools efibootmgr os-prober
+mkdir /boot/efi
+mount /dev/sda1 /boot/efi/
+grub-install --efi-directory=/boot/efi --bootloader-id=ArchLinux
+grub-mkconfig -o /boot/grub/grub.cfg
+exit
+#
+#
+useradd -m -G wheel zahed
+passwd zahed
+#
+ip addr
+systemctl start dhcpcd
+ip addr
+ping dns.google
+#
+pacman -S base-devel
+pacman -S bash-completion openssh
+sudo -ll
+sudo -lU zahed
+visudo 
+#
+# welcome banner
+cp /etc/issue /etc/issue.bak
+cat arch-master/ref_dir/etc/issue > /etc/issue
+#
+pacman -S xorg xorg-xinit xterm
+cp /etc/X11/xinit/xinitrc ~/.xinitrc
+vim .xinitrc 
+#
+pacman -S nvidia nvidia-settings
+nvidia-smi 
+nvidia-xconfig 
+less /etc/X11/xorg.conf
+#
+cat /var/log/Xorg.0.log | grep WW
+cat /var/log/Xorg.0.log | grep EE
+#
+#
+vim /etc/pacman.conf 
+mkdir /etc/pacman.d/hooks
+cat arch-master/ref_dir/etc/pacman.d/hooks/nvidia.hook > /etc/pacman.d/hooks/nvidia.hook
+cat arch-master/ref_dir/etc/mkinitcpio.conf > /etc/mkinitcpio.conf 
+cat arch-master/ref_dir/etc/default/grub >> /etc/default/grub
+vim /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
+#
+#
+pacman -S plasma
+pacman -S kde-applications
+#
+pacman -S gnu-free-fonts opendesktop-fonts ttf-dejavu ttf-liberation 
+#
+# tty font set
+pacman -S terminus-font
+cat arch-master/ref_dir/etc/vconsole.conf > /etc/vconsole.conf
+showconsolefont 
+#
+# kde discover backends
+pacman -S packagekit-qt5 
+pacman -S flatpak
+pacman -S fwupd 
+#
+pacman -S network-manager-applet pulseaudio-equalizer-ladspa 
+systemctl enable NetworkManager.service 
+systemctl enable sddm.service
+reboot
+#
+# applications
+pacman -S ctags git mtr p7zip tree unrar unzip wget
+pacman -S php php-cgi php-fpm xdebug composer
+pacman -S nodejs npm yarn
+#
+pacman -S atom chromium firefox gimp gnome-disk-utility gparted keepassxc mysql-workbench nmap okteta opera qbittorrent vlc 
+#
+pacman -S virtualbox virtualbox-guest-iso
+usermod -aG vboxusers zahed
+#
+pacman -S vagrant
+#
+# send installed package stats 
+pacman -S pkgstats
+#
+# mount partitions
+lsblk -f
+mkdir /mnt/tcEx
+mkdir /mnt/tcNt
+mkdir /mnt/wdcNt
+blkid /dev/sdb3 >> /etc/fstab
+blkid /dev/sdc1 >> /etc/fstab
+blkid /dev/sdc2 >> /etc/fstab
+vim /etc/fstab 
+mount -a
+findmnt 
+#
+# bluetooth
+pacman -S bluez bluez-utils
+systemctl enable bluetooth.service 
+systemctl start bluetooth.service
+bluetoothctl 
+vim /etc/bluetooth/main.conf
+# extract key from windows registry
+# for bluetooth devices in dual-boot system
+pacman -S chntpw 
+lsblk -f
+mount /dev/sda3 /mnt/windows/
+cd /mnt/windows/Windows/System32/config/
+ls -la SYSTEM
+chntpw -e SYSTEM
+cd /var/lib/bluetooth/
+cd MAC_ADDR/
+cd PORT_ADDR/
+vim info 
+#
+# security harden
+cat arch-master/ref_dir/etc/sysctl.d/50-dmesg-restrict.conf > /etc/sysctl.d/50-dmesg-restrict.conf
+vim /etc/ssh/sshd_config
+#
+# firewall config
+systemctl enable firewalld.service 
+systemctl start firewalld.service 
+firewall-cmd --state 
+firewall-cmd --get-active-zones 
+firewall-cmd --get-default-zone 
+#
+# network info
+man ss
+ss -l
+ip neigh 
+ip -s link 
+#
+# log check
+dmesg --color 
+journalctl -k -b
+#
+# ssd config
+lsblk --discard
+man fstrim 
+systemctl enable fstrim.timer 
+systemctl status fstrim.timer 
+#
